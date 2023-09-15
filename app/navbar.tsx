@@ -9,10 +9,10 @@ type NavbarProps = {
 };
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
+    if (localStorage.getItem("username") !== null) {
       setIsLoggedIn(true);
     }
   }, []);

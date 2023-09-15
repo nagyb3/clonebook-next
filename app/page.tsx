@@ -1,8 +1,9 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { UIEventHandler, useEffect, useState } from "react";
 import Post from "@/components/post";
+import { UnscopedEmitHelper } from "typescript";
 
 type PostType = {
   author_username: string;
@@ -17,6 +18,8 @@ type PostType = {
 export default function Home() {
   const [allPosts, setAllPosts] = useState<undefined | PostType[]>(undefined);
 
+  const [inputState, setInputState] = useState<string>("");
+
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts`)
       .then((response) => response.json())
@@ -26,6 +29,33 @@ export default function Home() {
       .catch((error) => console.error(error));
   }, []);
 
+  function handleChangeState(e: React.ChangeEvent<HTMLInputElement>) {
+    setInputState(e.target.value);
+  }
+
+  function handleSubmitPost() {
+    if (inputState !== "") {
+      fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          author_username: localStorage.getItem("username"),
+          text: inputState,
+        }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+
   return (
     <div className="min-h-[calc(100vh-70px)] bg-slate-200 flex flex-col items-center">
       <div className="text-center flex gap-4 p-4 max-w-[700px] w-full">
@@ -34,8 +64,12 @@ export default function Home() {
           id="make-post"
           placeholder="Say Something!"
           className="shadow-lg border-[1px] border-slate-700"
+          onChange={(e) => handleChangeState(e)}
+          value={inputState}
         />
-        <Button className="text-xl shadow-lg">Post</Button>
+        <Button className="text-xl shadow-lg" onClick={handleSubmitPost}>
+          Post
+        </Button>
       </div>
       <div className="flex flex-col gap-4 mt-8 w-full px-8">
         {allPosts !== undefined
