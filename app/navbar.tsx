@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type NavbarProps = {
@@ -7,7 +9,7 @@ type NavbarProps = {
 };
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
 
   useEffect(() => {
     if (localStorage.getItem("token") !== null) {
@@ -16,19 +18,25 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className="flex justify-between bg-blue-500 px-12 py-8">
+    <div className="flex justify-between bg-slate-400 px-6 sm:px-12 py-8 items-center h-[70px]">
       <h1 className="text-xl font-semibold">
         <a href="/">clonebook</a>
       </h1>
       {isLoggedIn ? (
-        <ul className="flex w-[40vw] justify-between">
-          <li>Friends</li>
-          <li>My Profile</li>
+        <ul className="flex justify-between items-center sm:gap-8 gap-4">
+          <li className="">
+            <Button>Friends</Button>
+          </li>
+          <Button variant="secondary" asChild>
+            <Link href="/myprofile">My Profile</Link>
+          </Button>
         </ul>
       ) : (
         <ul>
           <li>
-            <a href="/login">Log in</a>
+            <Button asChild>
+              <Link href="/login">LOG IN</Link>
+            </Button>
           </li>
         </ul>
       )}

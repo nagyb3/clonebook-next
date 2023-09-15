@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import {
-  isObjectLiteralElement,
-  isStringLiteralOrJsxExpression,
-} from "typescript";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function Login() {
   const [usernameState, setUsernameState] = React.useState<undefined | string>(
@@ -47,15 +46,15 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-slate-200 min-h-[calc(100vh-70px)]">
       <h1 className="mt-8 text-xl font-bold">Login</h1>
       <form className="mt-16 flex w-[50vw] flex-col items-center justify-center gap-8">
         <div>
-          <label className="mr-4" htmlFor="username">
+          <Label className="mr-4" htmlFor="username">
             Username:
-          </label>
-          <input
-            className="border-[1px] border-black p-[4px]"
+          </Label>
+          <Input
+            // className="border-[1px] border-black p-[4px]"
             type="text"
             name="username"
             id="username"
@@ -65,11 +64,11 @@ export default function Login() {
           />
         </div>
         <div>
-          <label htmlFor="password" className="mr-4">
+          <Label htmlFor="password" className="mr-4">
             Password:
-          </label>
-          <input
-            className="border-[1px] border-black p-[4px]"
+          </Label>
+          <Input
+            // className="border-[1px] border-black p-[4px]"
             type="password"
             name="password"
             id="password"
@@ -78,12 +77,7 @@ export default function Login() {
             value={passwordState}
           />
         </div>
-        <input
-          type="submit"
-          value="Login"
-          className="rounded border-[1px] border-black bg-blue-200 p-2"
-          onClick={handleLogin}
-        />
+        <Button onClick={handleLogin}>Login</Button>
       </form>
       <p className="mt-8">
         Don't have an account yet?{" "}
