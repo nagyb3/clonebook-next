@@ -2,9 +2,21 @@ import React from "react";
 // import dateFormat from "dateformat";
 // import FavoriteIcon from "@mui/icons-material/Favorite";
 // import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import { db, auth } from "../App";
-// import { confirmAlert } from "react-confirm-alert"; // Import
 // import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useRouter } from "next/navigation";
 
 type PostType = {
   author_username: string;
@@ -41,9 +53,6 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
   React.useEffect(() => {
     getCommentsList();
   }, []);
-
-  console.log(PostProp);
-
   //sort for OLDEST FIRST
   // function compare(a, b) {
   //   if (a.createdAt.seconds < b.createdAt.seconds) {
@@ -60,6 +69,18 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
     //
   };
 
+  function handleDeletePost() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.ok) {
+        window.location.reload();
+      }
+    });
+  }
+
+  // console.log(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}`);
+
   // function thisPostHasComment() {
   //   for (let i = 0; i < commentsList.length; i++) {
   //     if (commentsList[i].postId === PostProp.id) {
@@ -69,30 +90,40 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
   //   return false;
   // }
 
-  const onDeleteMessage = () => {
-    //use popup to accept to delete the message
-  };
-
   return (
     <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded">
+      <div className="flex justify-between">
+        <Button variant="link" className="p-0" asChild>
+          <Link href="https://telex.hu">@{PostProp.author_username}</Link>
+        </Button>
+        {PostProp.author_username === localStorage.getItem("username") ? (
+          // <button>DELETE</button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Delete Post</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to delete this post?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will action will
+                  permanently delete this post of yours!
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>No</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeletePost}>
+                  Yes
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        ) : undefined}
+      </div>
       <p>{PostProp.text}</p>
-
-      {/* {props.showDeleteButton && (
-        <div className="delete-post-container">
-          <button onClick={onDeleteMessage} className="delete-post">
-            DELETE
-          </button>
-        </div>
-      )} */}
       <div className="message-card-container">
-        <div className="top-row">
-          {/* <p className="display-name">@{post.authorDisplayName}</p> */}
-          <p>
-            {/* {dateFormat(post.createdAt.toDate(), "yyyy mmmm dS, HH:MM:ss")} */}
-          </p>
-        </div>
-        {/* <p className="message">{post.message}</p> */}
-
         <div className="bottom-row">
           <div onClick={clickLikeButton}>
             {/* {currentUserLikedThisMessage ? (

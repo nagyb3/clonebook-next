@@ -26,8 +26,6 @@ export default function Home() {
       .catch((error) => console.error(error));
   }, []);
 
-  console.log(allPosts);
-
   return (
     <div className="min-h-[calc(100vh-70px)] bg-slate-200 flex flex-col items-center">
       <div className="text-center flex gap-4 p-4 max-w-[700px] w-full">
@@ -43,7 +41,7 @@ export default function Home() {
         {allPosts !== undefined
           ? allPosts.map((post: PostType) => {
               // return <p>{post.text}</p>;
-              return <Post PostProp={post} />;
+              return <Post key={post._id} PostProp={post} />;
             })
           : undefined}
       </div>
