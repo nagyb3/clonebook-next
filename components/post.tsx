@@ -7,13 +7,13 @@ import React from "react";
 // import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 
 type PostType = {
-  // post: {
-  authorid: string;
+  author_username: string;
   creation_date: Date;
   text: string;
   __v: number;
   _id: string;
-  // };
+  comments: string[];
+  numberOfLikes: number;
 };
 
 export default function Post({ PostProp }: { PostProp: PostType }) {

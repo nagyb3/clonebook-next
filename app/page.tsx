@@ -5,11 +5,13 @@ import { useEffect, useState } from "react";
 import Post from "@/components/post";
 
 type PostType = {
-  authorid: string;
+  author_username: string;
   creation_date: Date;
   text: string;
   __v: number;
   _id: string;
+  comments: string[];
+  numberOfLikes: number;
 };
 
 export default function Home() {
@@ -23,6 +25,8 @@ export default function Home() {
       })
       .catch((error) => console.error(error));
   }, []);
+
+  console.log(allPosts);
 
   return (
     <div className="min-h-[calc(100vh-70px)] bg-slate-200 flex flex-col items-center">
