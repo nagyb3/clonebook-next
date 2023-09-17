@@ -18,7 +18,7 @@ export default function page() {
     undefined
   );
 
-  const [newMessageText, setNewMessageText] = React.useState("");
+  const [newMessageText, setNewMessageText] = React.useState<string>("");
 
   const [messageList, setMessagesList] = React.useState<MessageType[]>([]);
 
@@ -113,6 +113,7 @@ export default function page() {
                 value={newMessageText}
                 type="text"
                 className="shadow-lg border-[1px] border-slate-700"
+                placeholder="Send a message..."
               />
               <Button
                 type="submit"

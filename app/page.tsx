@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UIEventHandler, useEffect, useState } from "react";
 import Post from "@/components/post";
-import { UnscopedEmitHelper } from "typescript";
 
 type PostType = {
   author_username: string;
@@ -29,7 +28,13 @@ export default function Home() {
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts`)
       .then((response) => response.json())
       .then((data) => {
-        setAllPosts(data.all_posts);
+        let newList = data.all_posts;
+        newList = newList.sort(
+          (a: any, b: any) =>
+            new Date(b.creation_date).getTime() -
+            new Date(a.creation_date).getTime()
+        );
+        setAllPosts(newList);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -38,7 +43,8 @@ export default function Home() {
     setInputState(e.target.value);
   }
 
-  function handleSubmitPost() {
+  function handleSubmitPost(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (inputState !== "") {
       fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts`, {
         method: "POST",
@@ -64,7 +70,10 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-70px)] bg-slate-200 flex flex-col items-center">
       {isLoggedIn ? (
-        <div className="text-center flex gap-4 p-4 max-w-[700px] w-full">
+        <form
+          onSubmit={(e) => handleSubmitPost(e)}
+          className="text-center flex gap-4 p-4 max-w-[700px] w-full"
+        >
           <Input
             type="text"
             id="make-post"
@@ -73,10 +82,10 @@ export default function Home() {
             onChange={(e) => handleChangeState(e)}
             value={inputState}
           />
-          <Button className="text-xl shadow-lg" onClick={handleSubmitPost}>
+          <Button type="submit" className="text-xl shadow-lg">
             Post
           </Button>
-        </div>
+        </form>
       ) : undefined}
       <div className="flex flex-col gap-4 mt-8 w-full px-8 max-w-[800px]">
         {allPosts !== undefined
