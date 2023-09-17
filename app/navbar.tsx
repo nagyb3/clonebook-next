@@ -25,7 +25,9 @@ export default function Navbar() {
       {isLoggedIn ? (
         <ul className="flex justify-between items-center sm:gap-8 gap-4">
           <li className="">
-            <Button>Friends</Button>
+            <Button asChild>
+              <Link href="/friends">Friends</Link>
+            </Button>
           </li>
           <Button variant="secondary" asChild>
             <Link href="/myprofile">My Profile</Link>

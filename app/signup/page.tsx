@@ -7,16 +7,11 @@ import { Button } from "@/components/ui/button";
 import { ParkingSquare } from "lucide-react";
 
 export default function page() {
-  const [usernameState, setUsernameState] = React.useState<undefined | string>(
-    undefined
-  );
-  const [passwordState, setPasswordState] = React.useState<undefined | string>(
-    undefined
-  );
+  const [usernameState, setUsernameState] = React.useState<string>("");
+  const [passwordState, setPasswordState] = React.useState<string>("");
 
-  const [secondPasswordState, setSecondPasswordState] = React.useState<
-    undefined | string
-  >(undefined);
+  const [secondPasswordState, setSecondPasswordState] =
+    React.useState<string>("");
 
   const [showPasswordMisMatch, setShowPasswordMismatch] =
     React.useState<boolean>(false);
@@ -62,7 +57,7 @@ export default function page() {
 
   return (
     <div className="flex flex-col items-center bg-slate-200 min-h-[calc(100vh-70px)]">
-      <h1 className="mt-8 text-xl font-bold">Login</h1>
+      <h1 className="mt-8 text-xl font-bold">Sign up for clonebook</h1>
       <form
         className="mt-16 flex flex-col items-center justify-center gap-8"
         onSubmit={(e) => e.preventDefault}

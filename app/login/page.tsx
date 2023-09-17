@@ -6,12 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function Login() {
-  const [usernameState, setUsernameState] = React.useState<undefined | string>(
-    undefined
-  );
-  const [passwordState, setPasswordState] = React.useState<undefined | string>(
-    undefined
-  );
+  const [usernameState, setUsernameState] = React.useState<string>("");
+  const [passwordState, setPasswordState] = React.useState<string>("");
 
   function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
     setUsernameState(e.target.value);
@@ -60,7 +56,7 @@ export default function Login() {
             Username:
           </Label>
           <Input
-            // className="border-[1px] border-black p-[4px]"
+            className="shadow-lg border-[1px] border-slate-700"
             type="text"
             name="username"
             id="username"
@@ -74,7 +70,7 @@ export default function Login() {
             Password:
           </Label>
           <Input
-            // className="border-[1px] border-black p-[4px]"
+            className="shadow-lg border-[1px] border-slate-700"
             type="password"
             name="password"
             id="password"
