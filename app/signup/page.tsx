@@ -13,6 +13,8 @@ export default function page() {
   const [secondPasswordState, setSecondPasswordState] =
     React.useState<string>("");
 
+  const [emailState, setEmailState] = React.useState<string>("");
+
   const [showPasswordMisMatch, setShowPasswordMismatch] =
     React.useState<boolean>(false);
 
@@ -28,6 +30,10 @@ export default function page() {
     setSecondPasswordState(e.target.value);
   }
 
+  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setEmailState(e.target.value);
+  }
+
   function handleSignup() {
     if (passwordState === secondPasswordState && passwordState !== undefined) {
       fetch(`${process.env.API_URL}/signup`, {
@@ -39,6 +45,7 @@ export default function page() {
           username: usernameState,
           password: passwordState,
           second_password: secondPasswordState,
+          email: emailState,
         }),
       })
         .then((response) => {
@@ -74,6 +81,20 @@ export default function page() {
             placeholder="Your username.."
             onChange={(e) => handleUsernameChange(e)}
             value={usernameState}
+          />
+        </div>
+        <div>
+          <Label className="mr-4" htmlFor="email">
+            Email:
+          </Label>
+          <Input
+            className="shadow-lg border-[1px] border-slate-700"
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Your email.."
+            onChange={(e) => handleEmailChange(e)}
+            value={emailState}
           />
         </div>
         <div>
