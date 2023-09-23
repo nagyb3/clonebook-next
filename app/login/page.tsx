@@ -31,7 +31,6 @@ export default function Login() {
         }),
       })
         .then((response) => {
-          console.log(response);
           if (response.ok) {
             window.location.href = "/";
             localStorage.setItem("username", usernameState);
@@ -39,7 +38,7 @@ export default function Login() {
           return response.json();
         })
         .then((data) => {
-          console.log(data);
+          localStorage.setItem("token", data.token);
         })
         .catch((error) => {
           console.error(error);
