@@ -90,7 +90,6 @@ export default function Home() {
       <div className="flex flex-col gap-4 mt-8 w-full px-8 max-w-[800px]">
         {allPosts !== undefined
           ? allPosts.map((post: PostType) => {
-              // return <p>{post.text}</p>;
               return <Post key={post._id} PostProp={post} />;
             })
           : undefined}

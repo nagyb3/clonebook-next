@@ -1,6 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function page() {
   const [friendsState, setFriendsState] = useState<string[] | undefined>(
@@ -26,11 +34,22 @@ export default function page() {
       <h1 className="p-8 text-center font-semibold text-xl">Your Friends:</h1>
       <p className="pb-16">Click on their name and start chatting!</p>
       {friendsState !== undefined ? (
-        <ul className="list-disc">
+        <ul className="">
           {friendsState?.map((friend) => {
             return (
-              <li className="underline">
-                <a href={`/messenger?user=` + friend}>{friend}</a>
+              <li>
+                {/* <a href={`/messenger?user=` + friend}>{friend}</a> */}
+                <a href={`/messenger?user=` + friend}>
+                  <Card className="w-[350px]">
+                    <CardHeader>
+                      <CardTitle>
+                        {/* <a href={`/messenger?user=` + friend}>{friend}</a> */}
+                        {friend}
+                      </CardTitle>
+                      {/* <CardDescription>bio...</CardDescription> */}
+                    </CardHeader>
+                  </Card>
+                </a>
               </li>
             );
           })}
