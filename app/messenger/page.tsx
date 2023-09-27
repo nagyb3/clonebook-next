@@ -65,6 +65,7 @@ export default function page() {
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify({
           sender_username: localStorage.getItem("username"),
