@@ -49,10 +49,7 @@ export default function page() {
         }),
       })
         .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
+          window.location.href = "/login";
         })
         .catch((error) => {
           console.error(error);

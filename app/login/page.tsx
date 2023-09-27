@@ -17,7 +17,7 @@ export default function Login() {
     setPasswordState(e.target.value);
   }
 
-  function handleLogin(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (usernameState !== undefined && passwordState !== undefined) {
       fetch(`${process.env.API_URL}/login`, {
@@ -49,7 +49,10 @@ export default function Login() {
   return (
     <div className="flex flex-col items-center bg-slate-200 min-h-[calc(100vh-70px)]">
       <h1 className="mt-8 text-xl font-bold">Login</h1>
-      <form className="mt-16 flex w-[50vw] flex-col items-center justify-center gap-8">
+      <form
+        className="mt-16 flex w-[50vw] flex-col items-center justify-center gap-8"
+        onSubmit={(e) => handleFormSubmit(e)}
+      >
         <div>
           <Label className="mr-4" htmlFor="username">
             Username:
@@ -78,7 +81,7 @@ export default function Login() {
             value={passwordState}
           />
         </div>
-        <Button onClick={(e) => handleLogin(e)}>Login</Button>
+        <Button>Login</Button>
       </form>
       <p className="mt-8">
         Don't have an account yet?{" "}
