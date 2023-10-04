@@ -16,7 +16,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useRouter } from "next/navigation";
+import { Input } from "./ui/input";
+
+type CommentType = {
+  comment_author_username: string;
+  post_id: string;
+  text: string;
+  __v: number;
+  _id: string;
+  created_at: Date;
+};
 
 type PostType = {
   author_username: string;
@@ -24,7 +33,7 @@ type PostType = {
   text: string;
   __v: number;
   _id: string;
-  comments: string[];
+  comments: CommentType[];
   numberOfLikes: number;
 };
 
@@ -66,7 +75,26 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
 
   const onSubmitNewComment = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    //
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        comment_author_username: localStorage.getItem("username"),
+        text: newComment,
+        post_id: PostProp._id,
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   function handleDeletePost() {
@@ -79,50 +107,57 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
     });
   }
 
-  // console.log(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}`);
-
-  // function thisPostHasComment() {
-  //   for (let i = 0; i < commentsList.length; i++) {
-  //     if (commentsList[i].postId === PostProp.id) {
-  //       return true;
-  //     }
-  //   }
-  //   return false;
-  // }
+  console.log(PostProp.comments);
 
   return (
     <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded">
-      <div className="flex justify-between">
-        <Button variant="link" className="p-0" asChild>
-          <Link href="https://telex.hu">@{PostProp.author_username}</Link>
-        </Button>
-        {PostProp.author_username === localStorage.getItem("username") ? (
-          // <button>DELETE</button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="destructive">Delete Post</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure you want to delete this post?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will action will
-                  permanently delete this post of yours!
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>No</AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeletePost}>
-                  Yes
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        ) : undefined}
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between">
+          <Button variant="link" className="p-0" asChild>
+            <Link
+              className="font-semibold"
+              // TODO: make the user's profile page
+              href={`${process.env.NEXT_PUBLIC_API_URI}/profile/${PostProp.author_username}`}
+            >
+              @{PostProp.author_username}
+            </Link>
+          </Button>
+          {PostProp.author_username === localStorage.getItem("username") ? (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive">Delete Post</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Are you sure you want to delete this post?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This action cannot be undone. This will action will
+                    permanently delete this post of yours!
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>No</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleDeletePost}>
+                    Yes
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          ) : undefined}
+        </div>
+        <div className="flex items-center justify-between">
+          <p className="text-lg">{PostProp.text}</p>
+          <Button
+            variant="outline"
+            className="block text-sm border-[1px] border-gray-500"
+            onClick={() => setShowCommentForm((prev) => !prev)}
+          >
+            {showCommentForm ? "Hide" : "Send Comment"}
+          </Button>
+        </div>
       </div>
-      <p>{PostProp.text}</p>
       <div className="message-card-container">
         <div className="bottom-row">
           <div onClick={clickLikeButton}>
@@ -135,48 +170,40 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           <p className="number-of-likes" onClick={clickLikeButton}>
             {/* {post.numberOfLikes} */}
           </p>
-          {/* <button className="hide-show" onClick={onToggleCommentForm}>
-            {" "}
-            {showCommentForm ? "HIDE" : "SEND COMMENT"}
-          </button> */}
         </div>
 
         {showCommentForm && (
-          <form onSubmit={onSubmitNewComment} className="comment">
-            <input
+          <form onSubmit={onSubmitNewComment} className="flex py-2 gap-8">
+            <Input
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               type="text"
               name="comment"
               id="comment"
               placeholder="send a comment"
+              className="shadow-lg border-[1px] border-slate-700"
             />
-            <input
-              type="submit"
-              value="Send Comment"
-              className="send-comment"
-            />
+            <Button type="submit">SEND</Button>
           </form>
         )}
       </div>
-      {/* {thisPostHasComment() && (
-        <div className="comments-container">
+      {PostProp.comments.length > 0 && (
+        <div className="pt-3">
+          <hr className="my-2 border-gray-700" />
           <ul>
-            {commentsList.map((comment) => {
-              if (comment.postId === PostProp.id) {
-                return (
-                  <li key={comment.id}>
-                    <span className="comment-author">
-                      @{comment.authorDisplayName}:
-                    </span>{" "}
-                    {comment.text}
-                  </li>
-                );
-              }
+            {PostProp.comments.map((comment) => {
+              return (
+                <li key={comment._id}>
+                  <span className="comment-author">
+                    @{comment.comment_author_username}:
+                  </span>{" "}
+                  {comment.text}
+                </li>
+              );
             })}
           </ul>
         </div>
-      )} */}
+      )}
     </div>
   );
 }

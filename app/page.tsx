@@ -4,13 +4,22 @@ import { Button } from "@/components/ui/button";
 import { UIEventHandler, useEffect, useState } from "react";
 import Post from "@/components/post";
 
+type CommentType = {
+  comment_author_username: string;
+  post_id: string;
+  text: string;
+  __v: number;
+  _id: string;
+  created_at: Date;
+};
+
 type PostType = {
   author_username: string;
   creation_date: Date;
   text: string;
   __v: number;
   _id: string;
-  comments: string[];
+  comments: CommentType[];
   numberOfLikes: number;
 };
 
