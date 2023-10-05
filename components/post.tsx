@@ -107,8 +107,6 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
     });
   }
 
-  console.log(PostProp.comments);
-
   return (
     <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded">
       <div className="flex flex-col gap-4">

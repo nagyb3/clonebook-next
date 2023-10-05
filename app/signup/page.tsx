@@ -34,7 +34,8 @@ export default function page() {
     setEmailState(e.target.value);
   }
 
-  function handleSignup() {
+  function handleSignup(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (passwordState === secondPasswordState && passwordState !== undefined) {
       fetch(`${process.env.API_URL}/signup`, {
         method: "POST",
@@ -49,7 +50,9 @@ export default function page() {
         }),
       })
         .then((response) => {
-          window.location.href = "/login";
+          if (response.ok) {
+            window.location.href = "/login";
+          }
         })
         .catch((error) => {
           console.error(error);
@@ -64,7 +67,7 @@ export default function page() {
       <h1 className="mt-8 text-xl font-bold">Sign up for clonebook</h1>
       <form
         className="mt-16 flex flex-col items-center justify-center gap-8"
-        onSubmit={(e) => e.preventDefault}
+        onSubmit={(e) => handleSignup(e)}
       >
         <div>
           <Label className="mr-4" htmlFor="username">
@@ -122,7 +125,7 @@ export default function page() {
             value={secondPasswordState}
           />
         </div>
-        <Button onClick={handleSignup}>Sign up</Button>
+        <Button type="submit">Sign up</Button>
         {showPasswordMisMatch ? (
           <p className="text-red-700 font-semibold">
             Make sure the two password fields match each other!

@@ -9,7 +9,9 @@ export default function page() {
 
   const [editingBio, setEditingBio] = useState<boolean>(false);
 
-  const [bio, setBio] = useState<string>("");
+  const [bioCurrent, setBioCurrent] = useState<string>("");
+
+  const [bioInput, setBioInput] = useState<string>("");
 
   function handleLogout() {
     localStorage.removeItem("username");
@@ -33,16 +35,17 @@ export default function page() {
         return response.json();
       })
       .then((data) => {
-        setBio(data.user.bio);
+        setBioCurrent(data.user.bio);
+        setBioInput(data.user.bio);
       })
       .catch((error) => {
         console.error(error);
       });
-    // setBio(thisUser.bio)
     setThisUser(String(localStorage.getItem("username")));
   }, []);
 
-  function submitEditedBio() {
+  function submitEditedBio(e: React.SyntheticEvent) {
+    e.preventDefault();
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/users/${thisUser}/bio`, {
       method: "PUT",
       headers: {
@@ -50,8 +53,7 @@ export default function page() {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
       body: JSON.stringify({
-        bio: bio,
-        username: thisUser,
+        bio: bioInput,
       }),
     })
       .then((response) => {
@@ -64,7 +66,7 @@ export default function page() {
       });
   }
 
-  function handleEditBio(
+  function handleEditBioButtonClick(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void {
     setEditingBio((prev) => !prev);
@@ -79,21 +81,28 @@ export default function page() {
       <div>
         <h2 className="text-xl font-semibold">Your Bio:</h2>
         {editingBio ? (
-          <div>
+          <form onSubmit={(e) => submitEditedBio(e)}>
             <Input
               type="text"
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              value={bioInput}
+              onChange={(e) => setBioInput(e.target.value)}
             />
-            <Button onClick={(e) => handleEditBio(e)}>Submit bio!</Button>
-            <Button variant="destructive" onClick={(e) => handleEditBio(e)}>
+            <Button>Submit bio!</Button>
+            <Button
+              variant="destructive"
+              onClick={(e) => handleEditBioButtonClick(e)}
+            >
               Cancel
             </Button>
-          </div>
+          </form>
         ) : (
           <div>
-            <p className="my-4 border-[1px] border-black p-3 bg-white">{bio}</p>
-            <Button onClick={(e) => handleEditBio(e)}>Edit your bio!</Button>
+            <p className="my-4 border-[1px] border-black p-3 bg-white">
+              {bioCurrent}
+            </p>
+            <Button onClick={(e) => handleEditBioButtonClick(e)}>
+              Edit your bio!
+            </Button>
           </div>
         )}
       </div>

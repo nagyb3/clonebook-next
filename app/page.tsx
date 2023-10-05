@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { UIEventHandler, useEffect, useState } from "react";
 import Post from "@/components/post";
+import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 type CommentType = {
   comment_author_username: string;
