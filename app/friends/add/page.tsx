@@ -1,49 +1,25 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Allura, News_Cycle } from "next/font/google";
 
 export default function Page() {
-  const [friendsState, setFriendsState] = useState<string[] | undefined>(
-    undefined
-  );
   const [nameInput, setNameInput] = useState<string>("");
 
   const [errorState, setErrorState] = useState<string>("");
 
   const [successState, setSuccessState] = useState<string>("");
 
-  useEffect(() => {
-    // fetch(
-    //   `${process.env.NEXT_PUBLIC_API_URI}/friends/${localStorage.getItem(
-    //     "username"
-    //   )}`
-    // )
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     console.log(data);
-    //     setFriendsState(data.friends);
-    //   })
-    //   .catch((error) => console.error(error));
-  }, []);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
+  const [allUsernames, setAllUsernames] = useState<string[]>([]);
 
   function handleSendFriendReq(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (
-      nameInput !== undefined &&
-      nameInput !== undefined &&
-      localStorage.getItem !== null
-    ) {
+    if (nameInput !== "" && localStorage.getItem !== null) {
       fetch(`${process.env.API_URL}/friends/add`, {
         method: "PUT",
         headers: {
@@ -65,12 +41,44 @@ export default function Page() {
           }
           return response.json();
         })
-        .then((data) => {
-          //   localStorage.setItem("token", data.token);
-        })
         .catch((error) => {
           console.error(error);
         });
+    }
+  }
+
+  useEffect(() => {
+    fetch(`${process.env.API_URL}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+      })
+      .then((data) => {
+        setAllUsernames(data.all_usernames);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    if (errorState !== "") {
+      setErrorState("");
+    }
+    setNameInput(e.target.value);
+    if (allUsernames !== undefined) {
+      const newSuggestions = allUsernames;
+      const filteredSuggestions = newSuggestions.filter((suggestion) => {
+        return suggestion.toLowerCase().indexOf(nameInput.toLowerCase()) > -1;
+      });
+      setSuggestions(filteredSuggestions);
     }
   }
 
@@ -86,16 +94,27 @@ export default function Page() {
         <div>
           <Label htmlFor="new-friend">New friend&apos;s name:</Label>
           <Input
+            autoComplete="off"
             className="shadow-lg border-[1px] border-slate-700"
             type="text"
             name="new-friend"
             id="new-friend"
             placeholder="Enter the name of the new friend!"
-            onChange={(e) => setNameInput(e.target.value)}
+            onChange={(e) => handleInputChange(e)}
             value={nameInput}
           />
         </div>
         <Button className="w-full bg-blue-900">ADD FRIEND</Button>
+        {suggestions.length > 0 && (
+          <div className="flex gap-8 flex-col items-center">
+            <p>Suggestions:</p>
+            <ul>
+              {suggestions.map((suggestion, index) => (
+                <li key={index}>{suggestion}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </form>
       <p className="text-red-800 font-bold">{errorState}</p>
       <p className="text-green-800 font-bold">{successState}</p>
