@@ -38,13 +38,15 @@ export default function Page() {
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts`)
       .then((response) => response.json())
       .then((data) => {
-        let newList = data.all_posts;
-        newList = newList.sort(
-          (a: any, b: any) =>
+        let allPostsList = data.all_posts;
+        allPostsList.sort((a: PostType, b: PostType) => {
+          console.log(a.creation_date);
+          return (
             new Date(b.creation_date).getTime() -
             new Date(a.creation_date).getTime()
-        );
-        setAllPosts(newList);
+          );
+        });
+        setAllPosts(allPostsList);
       })
       .catch((error) => console.error(error));
   }, []);
@@ -86,6 +88,7 @@ export default function Page() {
           className="text-center flex gap-4 p-4 max-w-[700px] w-full"
         >
           <Input
+            autoComplete="off"
             type="text"
             id="make-post"
             placeholder="Say Something!"

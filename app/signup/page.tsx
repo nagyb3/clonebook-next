@@ -4,7 +4,6 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ParkingSquare } from "lucide-react";
 
 export default function Page() {
   const [usernameState, setUsernameState] = React.useState<string>("");
