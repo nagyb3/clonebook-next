@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ParkingSquare } from "lucide-react";
 
-export default function page() {
+export default function Page() {
   const [usernameState, setUsernameState] = React.useState<string>("");
   const [passwordState, setPasswordState] = React.useState<string>("");
 

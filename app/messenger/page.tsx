@@ -13,7 +13,7 @@ type MessageType = {
   creation_date: Date;
 };
 
-export default function page() {
+export default function Page() {
   const [userToChatWith, setUserToChatWith] = useState<string | undefined>(
     undefined
   );

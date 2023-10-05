@@ -24,7 +24,7 @@ type PostType = {
   numberOfLikes: number;
 };
 
-export default function Home() {
+export default function Page() {
   const [allPosts, setAllPosts] = useState<undefined | PostType[]>(undefined);
 
   const [inputState, setInputState] = useState<string>("");

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { useEffect, useState } from "react";
 
-export default function page() {
+export default function Page() {
   const [thisUser, setThisUser] = useState<string | undefined>(undefined);
 
   const [editingBio, setEditingBio] = useState<boolean>(false);

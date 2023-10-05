@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-export default function page() {
+export default function Page() {
   const [friendsState, setFriendsState] = useState<string[] | undefined>(
     undefined
   );

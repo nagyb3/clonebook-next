@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-export default function page() {
+export default function Page() {
   const [friendsState, setFriendsState] = useState<string[] | undefined>(
     undefined
   );
