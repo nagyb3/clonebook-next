@@ -36,7 +36,7 @@ export default function Page() {
   function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (passwordState === secondPasswordState && passwordState !== undefined) {
-      fetch(`${process.env.API_URL}/signup`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URI}/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

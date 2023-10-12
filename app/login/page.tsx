@@ -20,7 +20,7 @@ export default function Page() {
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (usernameState !== undefined && passwordState !== undefined) {
-      fetch(`${process.env.API_URL}/login`, {
+      fetch(`${process.env.NEXT_PUBLIC_API_URI}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
