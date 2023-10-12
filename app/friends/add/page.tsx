@@ -33,9 +33,11 @@ export default function Page() {
       })
         .then((response) => {
           if (response.ok) {
-            window.location.href = "/friends";
             setSuccessState("Friend added!!");
             setErrorState("");
+            setTimeout(() => {
+              window.location.href = "/friends";
+            }, 2000);
           } else {
             setErrorState("You have not given a correct username!");
           }
@@ -105,6 +107,12 @@ export default function Page() {
           />
         </div>
         <Button className="w-full bg-blue-900">ADD FRIEND</Button>
+        {errorState !== "" && (
+          <p className="text-red-800 font-bold text-xl">{errorState}</p>
+        )}
+        {successState && (
+          <p className="text-green-700 font-bold text-2xl">{successState}</p>
+        )}
         {suggestions.length > 0 && (
           <div className="flex gap-8 flex-col items-center">
             <p>Suggestions:</p>
@@ -116,8 +124,6 @@ export default function Page() {
           </div>
         )}
       </form>
-      <p className="text-red-800 font-bold">{errorState}</p>
-      <p className="text-green-800 font-bold">{successState}</p>
     </div>
   );
 }

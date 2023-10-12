@@ -1,8 +1,4 @@
 import React from "react";
-// import dateFormat from "dateformat";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
@@ -38,40 +34,15 @@ type PostType = {
 };
 
 export default function Post({ PostProp }: { PostProp: PostType }) {
-  // const [currentUserLikedThisMessage, setCurrentUserLikedThisMessage] =
-  //   React.useState();
-
   const [showCommentForm, setShowCommentForm] = React.useState(false);
 
   const [newComment, setNewComment] = React.useState("");
 
   const [commentsList, setCommentsList] = React.useState([]);
 
-  const clickLikeButton = async () => {
-    //
-  };
-
   function onToggleCommentForm() {
     setShowCommentForm(!showCommentForm);
   }
-
-  const getCommentsList = async () => {
-    //
-  };
-
-  React.useEffect(() => {
-    getCommentsList();
-  }, []);
-  //sort for OLDEST FIRST
-  // function compare(a, b) {
-  //   if (a.createdAt.seconds < b.createdAt.seconds) {
-  //     return -1;
-  //   }
-  //   if (a.createdAt.seconds > b.createdAt.seconds) {
-  //     return 1;
-  //   }
-  //   return 0;
-  // }
 
   const onSubmitNewComment = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -158,21 +129,22 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
       </div>
       <div className="message-card-container">
         <div className="bottom-row">
-          <div onClick={clickLikeButton}>
-            {/* {currentUserLikedThisMessage ? (
+          {/* <div onClick={clickLikeButton}> */}
+          {/* {currentUserLikedThisMessage ? (
               <FavoriteIcon />
             ) : (
               <FavoriteBorderIcon />
             )} */}
-          </div>
-          <p className="number-of-likes" onClick={clickLikeButton}>
+          {/* </div> */}
+          {/* <p className="number-of-likes" onClick={clickLikeButton}>
             {/* {post.numberOfLikes} */}
-          </p>
+          {/* </p> */}
         </div>
 
         {showCommentForm && (
           <form onSubmit={onSubmitNewComment} className="flex py-2 gap-8">
             <Input
+              autoCapitalize="off"
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               type="text"

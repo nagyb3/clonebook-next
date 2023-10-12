@@ -1,9 +1,8 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { UIEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Post from "@/components/post";
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
 
 type CommentType = {
   comment_author_username: string;
@@ -40,7 +39,6 @@ export default function Page() {
       .then((data) => {
         let allPostsList = data.all_posts;
         allPostsList.sort((a: PostType, b: PostType) => {
-          console.log(a.creation_date);
           return (
             new Date(b.creation_date).getTime() -
             new Date(a.creation_date).getTime()

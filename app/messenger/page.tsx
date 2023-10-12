@@ -79,7 +79,6 @@ export default function Page() {
             fetchChat();
           }
         })
-        .then((data) => {})
         .catch((error) => console.error(error));
     }
   };
@@ -98,8 +97,8 @@ export default function Page() {
                   key={message._id}
                   className={
                     message.sender_username === localStorage.getItem("username")
-                      ? "bg-blue-700 text-white rounded p-2 w-fit self-end shadow-[3px_3px_6px_rgba(0,0,0,0.5)]"
-                      : "bg-gray-300 text-black rounded p-2 w-fit border-[1px] border-gray-500 shadow-[3px_3px_6px_rgba(0,0,0,0.3)]"
+                      ? "bg-blue-700 text-white rounded p-2 w-fit self-end shadow-[3px_3px_6px_rgba(0,0,0,0.2)]"
+                      : "bg-gray-300 text-black rounded p-2 w-fit border-[1px] border-gray-500 shadow-[3px_3px_6px_rgba(0,0,0,0.2)]"
                   }
                 >
                   {message.text}
