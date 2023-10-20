@@ -20,7 +20,7 @@ type PostType = {
   __v: number;
   _id: string;
   comments: CommentType[];
-  numberOfLikes: number;
+  users_who_liked: string[];
 };
 
 export default function Page() {

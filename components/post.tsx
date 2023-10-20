@@ -30,7 +30,7 @@ type PostType = {
   __v: number;
   _id: string;
   comments: CommentType[];
-  numberOfLikes: number;
+  users_who_liked: string[];
 };
 
 export default function Post({ PostProp }: { PostProp: PostType }) {
@@ -39,6 +39,8 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
   const [newComment, setNewComment] = React.useState("");
 
   const [commentsList, setCommentsList] = React.useState([]);
+
+  const [userLikedThisPost, setUserLikedThisPost] = React.useState(false);
 
   function onToggleCommentForm() {
     setShowCommentForm(!showCommentForm);
@@ -78,6 +80,27 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
     });
   }
 
+  function handleLikeClick() {
+    fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}/like`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        username: localStorage.getItem("username"),
+      }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          window.location.reload();
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
   return (
     <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded">
       <div className="flex flex-col gap-4">
@@ -114,7 +137,42 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
-          ) : undefined}
+          ) : (
+            <div className="flex items-center gap-2" onClick={handleLikeClick}>
+              <p className="font-semibold">{PostProp.users_who_liked.length}</p>
+              <p>
+                {PostProp.users_who_liked.includes(
+                  String(localStorage.getItem("username"))
+                ) ? (
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor"
+                    viewBox="0 0 20 18"
+                  >
+                    <path d="M17.947 2.053a5.209 5.209 0 0 0-3.793-1.53A6.414 6.414 0 0 0 10 2.311 6.482 6.482 0 0 0 5.824.5a5.2 5.2 0 0 0-3.8 1.521c-1.915 1.916-2.315 5.392.625 8.333l7 7a.5.5 0 0 0 .708 0l7-7a6.6 6.6 0 0 0 2.123-4.508 5.179 5.179 0 0 0-1.533-3.793Z" />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 21 19"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 4C5.5-1.5-1.5 5.5 4 11l7 7 7-7c5.458-5.458-1.542-12.458-7-7Z"
+                    />
+                  </svg>
+                )}
+              </p>
+            </div>
+          )}
         </div>
         <div className="flex items-center justify-between">
           <p className="text-lg">{PostProp.text}</p>
@@ -127,20 +185,7 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           </Button>
         </div>
       </div>
-      <div className="message-card-container">
-        <div className="bottom-row">
-          {/* <div onClick={clickLikeButton}> */}
-          {/* {currentUserLikedThisMessage ? (
-              <FavoriteIcon />
-            ) : (
-              <FavoriteBorderIcon />
-            )} */}
-          {/* </div> */}
-          {/* <p className="number-of-likes" onClick={clickLikeButton}>
-            {/* {post.numberOfLikes} */}
-          {/* </p> */}
-        </div>
-
+      <div>
         {showCommentForm && (
           <form onSubmit={onSubmitNewComment} className="flex py-2 gap-8">
             <Input
