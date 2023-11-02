@@ -11,6 +11,7 @@ export default function Page() {
 
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
+  const [showError, setShowError] = React.useState<boolean>(false);
 
   // function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
   //   setUsernameState(e.target.value);
@@ -39,6 +40,8 @@ export default function Page() {
             if (usernameRef.current !== null) {
               localStorage.setItem("username", usernameRef.current.value);
             }
+          } else {
+            setShowError(true);
           }
           return response.json();
         })
@@ -86,6 +89,11 @@ export default function Page() {
         </div>
         <Button>Login</Button>
       </form>
+      {showError ? (
+        <p className="mt-8 text-red-700 font-semibold text-lg">
+          Incorrect username or password!
+        </p>
+      ) : undefined}
       <p className="mt-8">
         Don&apos;t have an account yet?{" "}
         <a
