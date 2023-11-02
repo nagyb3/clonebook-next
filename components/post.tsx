@@ -81,24 +81,26 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
   }
 
   function handleLikeClick() {
-    fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}/like`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        username: localStorage.getItem("username"),
-      }),
-    })
-      .then((response) => {
-        if (response.ok) {
-          window.location.reload();
-        }
+    if (localStorage.getItem("username") !== null) {
+      fetch(`${process.env.NEXT_PUBLIC_API_URI}/posts/${PostProp._id}/like`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          username: localStorage.getItem("username"),
+        }),
       })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }
 
   return (
@@ -182,7 +184,11 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           <Button
             variant="outline"
             className="block text-sm border-[1px] border-gray-500"
-            onClick={() => setShowCommentForm((prev) => !prev)}
+            onClick={() => {
+              if (localStorage.getItem("username") !== null) {
+                setShowCommentForm((prev) => !prev);
+              }
+            }}
           >
             {showCommentForm ? "Hide" : "Send Comment"}
           </Button>
