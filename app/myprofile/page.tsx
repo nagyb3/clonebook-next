@@ -79,7 +79,7 @@ export default function Page() {
         You are logged in as: <span className="font-bold">{thisUser}</span>
       </p>
       <div>
-        <h2 className="text-xl font-semibold">Your Bio:</h2>
+        <h2 className="text-xl font-semibold text-center">Your Bio:</h2>
         {editingBio ? (
           <form onSubmit={(e) => submitEditedBio(e)}>
             <Input
