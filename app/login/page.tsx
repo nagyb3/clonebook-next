@@ -6,34 +6,39 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function Page() {
-  const [usernameState, setUsernameState] = React.useState<string>("");
-  const [passwordState, setPasswordState] = React.useState<string>("");
+  // const [usernameState, setUsernameState] = React.useState<string>("");
+  // const [passwordState, setPasswordState] = React.useState<string>("");
 
-  function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setUsernameState(e.target.value);
-  }
+  const usernameRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
-  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPasswordState(e.target.value);
-  }
+  // function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   setUsernameState(e.target.value);
+  // }
+
+  // function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+  //   setPasswordState(e.target.value);
+  // }
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (usernameState !== undefined && passwordState !== undefined) {
+    if (usernameRef.current !== null && passwordRef.current !== null) {
       fetch(`${process.env.NEXT_PUBLIC_API_URI}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: usernameState,
-          password: passwordState,
+          username: usernameRef.current.value,
+          password: passwordRef.current.value,
         }),
       })
         .then((response) => {
           if (response.ok) {
             window.location.href = "/";
-            localStorage.setItem("username", usernameState);
+            if (usernameRef.current !== null) {
+              localStorage.setItem("username", usernameRef.current.value);
+            }
           }
           return response.json();
         })
@@ -63,8 +68,7 @@ export default function Page() {
             name="username"
             id="username"
             placeholder="Your username.."
-            onChange={(e) => handleUsernameChange(e)}
-            value={usernameState}
+            ref={usernameRef}
           />
         </div>
         <div>
@@ -77,8 +81,7 @@ export default function Page() {
             name="password"
             id="password"
             placeholder="Your password.."
-            onChange={(e) => handlePasswordChange(e)}
-            value={passwordState}
+            ref={passwordRef}
           />
         </div>
         <Button>Login</Button>
