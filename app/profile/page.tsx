@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import React, { useDebugValue, useEffect } from "react";
+import React, { useEffect } from "react";
 import Post, { PostType } from "@/components/post";
 
 type userProfileType = {
@@ -24,6 +24,11 @@ export default function Page() {
     string | undefined
   >(undefined);
 
+  const [
+    isLoggedInWithDifferentUserThanThis,
+    setIsLoggedInWithDifferentUserThanThis,
+  ] = React.useState<boolean>(false);
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const username = params.get("username");
@@ -43,6 +48,10 @@ export default function Page() {
       .catch((error) => {
         console.error(error);
       });
+    setIsLoggedInWithDifferentUserThanThis(
+      localStorage.getItem("username") !== username &&
+        localStorage.getItem("username") !== null
+    );
   }, []);
 
   function handleAddAsFriend() {
@@ -81,8 +90,7 @@ export default function Page() {
         <p className="text-xl m-2">Bio:</p>
         <p className="m-2">{userProfileData?.bio}</p>
       </div>
-      {userProfileData?.username !== localStorage.getItem("username") &&
-      localStorage.getItem("username") !== null ? (
+      {isLoggedInWithDifferentUserThanThis ? (
         <Button
           onClick={handleAddAsFriend}
           variant="secondary"
