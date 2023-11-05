@@ -6,20 +6,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function Page() {
-  // const [usernameState, setUsernameState] = React.useState<string>("");
-  // const [passwordState, setPasswordState] = React.useState<string>("");
-
   const usernameRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
   const [showError, setShowError] = React.useState<boolean>(false);
-
-  // function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   setUsernameState(e.target.value);
-  // }
-
-  // function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-  //   setPasswordState(e.target.value);
-  // }
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

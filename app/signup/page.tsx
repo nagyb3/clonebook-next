@@ -6,58 +6,43 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 export default function Page() {
-  const [usernameState, setUsernameState] = React.useState<string>("");
-  const [passwordState, setPasswordState] = React.useState<string>("");
-
-  const [secondPasswordState, setSecondPasswordState] =
-    React.useState<string>("");
-
-  const [emailState, setEmailState] = React.useState<string>("");
+  const usernameRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
+  const secondPasswordRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
 
   const [showPasswordMisMatch, setShowPasswordMismatch] =
     React.useState<boolean>(false);
 
-  function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setUsernameState(e.target.value);
-  }
-
-  function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setPasswordState(e.target.value);
-  }
-
-  function handleSecondPasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setSecondPasswordState(e.target.value);
-  }
-
-  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setEmailState(e.target.value);
-  }
-
   function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (passwordState === secondPasswordState && passwordState !== undefined) {
-      fetch(`${process.env.NEXT_PUBLIC_API_URI}/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: usernameState,
-          password: passwordState,
-          second_password: secondPasswordState,
-          email: emailState,
-        }),
-      })
-        .then((response) => {
-          if (response.ok) {
-            window.location.href = "/login";
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else {
-      setShowPasswordMismatch(true);
+    if (usernameRef.current !== null && emailRef.current !== null) {
+      if (passwordRef.current !== null && secondPasswordRef.current !== null) {
+        if (passwordRef.current.value === secondPasswordRef.current.value) {
+          fetch(`${process.env.NEXT_PUBLIC_API_URI}/signup`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              username: usernameRef.current.value,
+              password: passwordRef.current.value,
+              second_password: secondPasswordRef.current.value,
+              email: emailRef.current.value,
+            }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                window.location.href = "/login";
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        } else {
+          setShowPasswordMismatch(true);
+        }
+      }
     }
   }
 
@@ -78,8 +63,7 @@ export default function Page() {
             name="username"
             id="username"
             placeholder="Your username.."
-            onChange={(e) => handleUsernameChange(e)}
-            value={usernameState}
+            ref={usernameRef}
           />
         </div>
         <div>
@@ -92,8 +76,7 @@ export default function Page() {
             name="email"
             id="email"
             placeholder="Your email.."
-            onChange={(e) => handleEmailChange(e)}
-            value={emailState}
+            ref={emailRef}
           />
         </div>
         <div>
@@ -106,8 +89,7 @@ export default function Page() {
             name="password"
             id="password"
             placeholder="Your password.."
-            onChange={(e) => handlePasswordChange(e)}
-            value={passwordState}
+            ref={passwordRef}
           />
         </div>
         <div>
@@ -120,8 +102,7 @@ export default function Page() {
             name="comfirm-password"
             id="comfirm-password"
             placeholder="Comfirm password.."
-            onChange={(e) => handleSecondPasswordChange(e)}
-            value={secondPasswordState}
+            ref={secondPasswordRef}
           />
         </div>
         <Button type="submit">Sign up</Button>

@@ -23,7 +23,7 @@ type CommentType = {
   created_at: Date;
 };
 
-type PostType = {
+export type PostType = {
   author_username: string;
   creation_date: Date;
   text: string;
@@ -110,8 +110,7 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           <Button variant="link" className="p-0" asChild>
             <Link
               className="font-semibold"
-              // TODO: make the user's profile page
-              href={`${process.env.NEXT_PUBLIC_API_URI}/profile/${PostProp.author_username}`}
+              href={"/profile?username=" + PostProp.author_username}
             >
               @{PostProp.author_username}
             </Link>
@@ -217,12 +216,23 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           <ul>
             {PostProp.comments.map((comment) => {
               return (
-                <li key={comment._id}>
-                  <span className="comment-author">
-                    @{comment.comment_author_username}:
-                  </span>{" "}
+                <ul>
+                  <Button
+                    variant="link"
+                    className="p-0 pr-2"
+                    asChild
+                    key={comment._id}
+                  >
+                    <Link
+                      href={
+                        "/profile?username=" + comment.comment_author_username
+                      }
+                    >
+                      @{comment.comment_author_username}:
+                    </Link>
+                  </Button>
                   {comment.text}
-                </li>
+                </ul>
               );
             })}
           </ul>
