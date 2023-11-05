@@ -30,12 +30,6 @@ export default function Page() {
     }
   }, []);
 
-  useEffect(() => {
-    if (userToChatWith && localStorage.getItem("username") !== null) {
-      fetchChat();
-    }
-  }, [userToChatWith]);
-
   const fetchChat = () => {
     fetch(`${process.env.NEXT_PUBLIC_API_URI}/chat`, {
       method: "POST",
@@ -57,6 +51,12 @@ export default function Page() {
         console.error(error);
       });
   };
+
+  useEffect(() => {
+    if (userToChatWith && localStorage.getItem("username") !== null) {
+      fetchChat();
+    }
+  }, [userToChatWith, fetchChat]);
 
   const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
