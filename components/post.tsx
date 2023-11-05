@@ -216,7 +216,7 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
           <ul>
             {PostProp.comments.map((comment) => {
               return (
-                <ul>
+                <ul key={comment._id}>
                   <Button
                     variant="link"
                     className="p-0 pr-2"

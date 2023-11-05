@@ -56,7 +56,7 @@ export default function Page() {
     if (userToChatWith && localStorage.getItem("username") !== null) {
       fetchChat();
     }
-  }, [userToChatWith, fetchChat]);
+  }, [userToChatWith]);
 
   const submitMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
