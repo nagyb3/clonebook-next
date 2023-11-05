@@ -100,11 +100,13 @@ export default function Page() {
         </form>
       ) : undefined}
       <div className="flex flex-col gap-4 mt-8 w-full px-8 max-w-[800px]">
-        {allPosts !== undefined
-          ? allPosts.map((post: PostType) => {
-              return <Post key={post._id} PostProp={post} />;
-            })
-          : undefined}
+        {allPosts !== undefined ? (
+          allPosts.map((post: PostType) => {
+            return <Post key={post._id} PostProp={post} />;
+          })
+        ) : (
+          <p className="text-center">Be the first the make a post!</p>
+        )}
       </div>
     </div>
   );
