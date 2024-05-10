@@ -4,7 +4,7 @@ const nextConfig = {
     API_URL: "http://localhost:5000",
   },
   i18n: {
-    locales: ["en-US", "hu"],
+    locales: ["en-US", "en"],
     defaultLocale: "en-US",
   },
 };
