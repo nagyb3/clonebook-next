@@ -104,7 +104,7 @@ export default function Post({ PostProp }: { PostProp: PostType }) {
   }
 
   return (
-    <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded">
+    <div className="border-[1px] border-slate-700 p-3 bg-slate-100 shadow-lg rounded w-full">
       <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <Button variant="link" className="p-0" asChild>
