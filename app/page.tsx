@@ -87,8 +87,6 @@ export default function Page() {
     }
   }
 
-  console.log(isPostsLoading);
-
   return (
     <div className="min-h-[calc(100vh-70px)] bg-slate-200 flex flex-col items-center">
       {isLoggedIn && !isPostsLoading ? (
